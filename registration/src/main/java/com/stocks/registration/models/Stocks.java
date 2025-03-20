@@ -1,6 +1,7 @@
 package com.stocks.registration.models;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import jakarta.persistence.Entity;
@@ -26,4 +27,7 @@ public class Stocks {
     private double minValue;
     private double maxValue;
     private Map<LocalDate, Double> history;
+    private String symbol;
+    private double lastClosingPrice;
+    private LocalDateTime lastUpdated;
 }
