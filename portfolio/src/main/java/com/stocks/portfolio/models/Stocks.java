@@ -2,7 +2,12 @@ package com.stocks.portfolio.models;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Map;
+
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,7 +31,9 @@ public class Stocks {
     private int max;
     private double minValue;
     private double maxValue;
-    private Map<LocalDate, Double> history;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JdbcTypeCode(SqlTypes.JSON)
+    private Map<Date, Double> history;
     private String symbol;
     private double lastClosingPrice;
     private LocalDateTime lastUpdated;
