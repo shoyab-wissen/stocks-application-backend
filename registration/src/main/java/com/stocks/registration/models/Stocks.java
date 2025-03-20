@@ -1,8 +1,9 @@
-package com.stocks.portfolio.models;
+package com.stocks.registration.models;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import org.hibernate.annotations.JdbcTypeCode;
