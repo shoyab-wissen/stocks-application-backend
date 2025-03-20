@@ -1,9 +1,6 @@
 package com.stocks.registration.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +17,10 @@ public class Transaction {
     private String transactionDate;
     private String description;
     private String status;
+
+    @ManyToOne
+    @JoinColumn(name = "stock_id")
     private Stocks stock;
+
     private int stockQty;
 }
