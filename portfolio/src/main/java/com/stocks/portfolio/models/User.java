@@ -21,6 +21,7 @@ public class User {
     private int accountNumber;
     private double balance;
     private int transactionCount;
+    private String panCard;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")

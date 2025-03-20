@@ -2,11 +2,7 @@ package com.stocks.trading.models;
 
 import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,6 +21,13 @@ public class User {
     private int accountNumber;
     private double balance;
     private int transactionCount;
-    private List<Stocks> ownedStocks;
+    private String panCard;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<UserStock> ownedStocks;
+
+    @ManyToMany
+    @JoinTable(name = "user_watchlist", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "stock_id"))
     private List<Stocks> watchlist;
 }

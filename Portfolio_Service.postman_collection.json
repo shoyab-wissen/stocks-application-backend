@@ -1,0 +1,157 @@
+{
+    "info": {
+        "name": "Portfolio Service",
+        "description": "Collection for Portfolio microservice endpoints",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Get User Portfolio",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8081/api/portfolio/1",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "8081",
+                    "path": ["api", "portfolio", "1"]
+                },
+                "description": "Retrieves portfolio details for a specific user"
+            }
+        },
+        {
+            "name": "Add Stock to Portfolio",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "http://localhost:8081/api/portfolio/1/stocks?stockId=1&quantity=100&buyPrice=150.50",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "8081",
+                    "path": ["api", "portfolio", "1", "stocks"],
+                    "query": [
+                        {
+                            "key": "stockId",
+                            "value": "1"
+                        },
+                        {
+                            "key": "quantity",
+                            "value": "100"
+                        },
+                        {
+                            "key": "buyPrice",
+                            "value": "150.50"
+                        }
+                    ]
+                },
+                "description": "Add a stock to user's portfolio"
+            }
+        },
+        {
+            "name": "Add Stock to Watchlist",
+            "request": {
+                "method": "POST",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8081/api/portfolio/1/watchlist/1",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "8081",
+                    "path": ["api", "portfolio", "1", "watchlist", "1"]
+                },
+                "description": "Add a stock to user's watchlist"
+            }
+        },
+        {
+            "name": "Remove Stock from Watchlist",
+            "request": {
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8081/api/portfolio/1/watchlist/1",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "8081",
+                    "path": ["api", "portfolio", "1", "watchlist", "1"]
+                },
+                "description": "Remove a stock from user's watchlist"
+            }
+        },
+        {
+            "name": "Get User Stock Holdings",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8081/api/portfolio/1/holdings",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "8081",
+                    "path": ["api", "portfolio", "1", "holdings"]
+                },
+                "description": "Get all stock holdings for a user"
+            }
+        },
+        {
+            "name": "Get User Watchlist",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8081/api/portfolio/1/watchlist",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "8081",
+                    "path": ["api", "portfolio", "1", "watchlist"]
+                },
+                "description": "Get user's watchlist"
+            }
+        },
+        {
+            "name": "Update Stock Quantity",
+            "request": {
+                "method": "PUT",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "http://localhost:8081/api/portfolio/1/stocks/1",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "8081",
+                    "path": ["api", "portfolio", "1", "stocks", "1"]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"quantity\": 150,\n    \"buyPrice\": 155.75\n}"
+                },
+                "description": "Update quantity of a stock in portfolio"
+            }
+        },
+        {
+            "name": "Get Portfolio Summary",
+            "request": {
+                "method": "GET",
+                "header": [],
+                "url": {
+                    "raw": "http://localhost:8081/api/portfolio/1/summary",
+                    "protocol": "http",
+                    "host": ["localhost"],
+                    "port": "8081",
+                    "path": ["api", "portfolio", "1", "summary"]
+                },
+                "description": "Get summary of portfolio including total value and profit/loss"
+            }
+        }
+    ]
+}
