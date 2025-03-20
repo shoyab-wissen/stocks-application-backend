@@ -16,6 +16,7 @@ services:
   eureka-server:
     build: ./server
     container_name: eureka-server
+    image: shoyabsiddique/eureka-server:latest
     ports:
       - "8761:8761"
     environment:
@@ -23,6 +24,7 @@ services:
 
   gateway:
     build: ./gateway
+    image: shoyabsiddique/gateway:latest
     container_name: gateway
     ports:
       - "9999:9999"
@@ -34,6 +36,7 @@ services:
 
   exchange:
     build: ./exchange
+    image: shoyabsiddique/exchange:latest
     container_name: exchange
     ports:
       - "8080:8080"
@@ -47,6 +50,7 @@ services:
 
   portfolio:
     build: ./portfolio
+    image: shoyabsiddique/portfolio:latest
     container_name: portfolio
     ports:
       - "8081:8081"
@@ -60,6 +64,7 @@ services:
 
   registration:
     build: ./registration
+    image: shoyabsiddique/registration:latest
     container_name: registration
     ports:
       - "8082:8082"
@@ -73,6 +78,7 @@ services:
 
   trading:
     build: ./trading
+    image: shoyabsiddique/trading:latest
     container_name: trading
     ports:
       - "8083:8083"
