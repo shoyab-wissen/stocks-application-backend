@@ -1,0 +1,130 @@
+{
+    "info": {
+      "name": "Registration Service",
+      "description": "Collection for Registration microservice endpoints (port 8082)",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Register User",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "url": {
+            "raw": "http://localhost:8082/api/auth/register",
+            "protocol": "http",
+            "host": [
+              "localhost"
+            ],
+            "port": "8082",
+            "path": [
+              "api",
+              "auth",
+              "register"
+            ]
+          },
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"12345\",\n  \"isActive\": true,\n  \"accountNumber\": 1001,\n  \"balance\": 5000,\n  \"transactionCount\": 0,\n  \"panCard\": \"ABCDE1234F\",\n  \"dateOfBirth\": \"1990-05-15\"\n}"
+          },
+          "description": "Registers a new user with all necessary fields."
+        }
+      },
+      {
+        "name": "Login User",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "url": {
+            "raw": "http://localhost:8082/api/auth/login",
+            "protocol": "http",
+            "host": [
+              "localhost"
+            ],
+            "port": "8082",
+            "path": [
+              "api",
+              "auth",
+              "login"
+            ]
+          },
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"12345\"\n}"
+          },
+          "description": "Logs in a user with email and password."
+        }
+      },
+      {
+        "name": "Forgot Password",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "url": {
+            "raw": "http://localhost:8082/api/auth/forgot-password",
+            "protocol": "http",
+            "host": [
+              "localhost"
+            ],
+            "port": "8082",
+            "path": [
+              "api",
+              "auth",
+              "forgot-password"
+            ]
+          },
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"email\": \"john@example.com\",\n  \"dateOfBirth\": \"1990-05-15\",\n  \"newPassword\": \"newPass123\"\n}"
+          },
+          "description": "Resets password if email and dateOfBirth match."
+        }
+      },
+      {
+        "name": "Change Password",
+        "request": {
+          "method": "POST",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "url": {
+            "raw": "http://localhost:8082/api/auth/change-password",
+            "protocol": "http",
+            "host": [
+              "localhost"
+            ],
+            "port": "8082",
+            "path": [
+              "api",
+              "auth",
+              "change-password"
+            ]
+          },
+          "body": {
+            "mode": "raw",
+            "raw": "{\n  \"email\": \"john@example.com\",\n  \"oldPassword\": \"12345\",\n  \"newPassword\": \"abc123\"\n}"
+          },
+          "description": "Changes user's password if oldPassword is correct."
+        }
+      }
+    ]
+  }
+  
