@@ -7,20 +7,19 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class Transaction {
+@Table(name = "user_stocks")
+public class UserStock {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int transactionId;
-    private String accountId;
-    private String transactionType;
-    private double amount;
-    private String transactionDate;
-    private String description;
-    private String status;
-
+    private int id;
+    
     @ManyToOne
     @JoinColumn(name = "stock_id")
     private Stocks stock;
-
-    private int stockQty;
+    
+    private int quantity;
+    private double averageBuyPrice;
+    private double totalInvestment;
+    private double currentValue;
+    private double profitLoss;
 }
