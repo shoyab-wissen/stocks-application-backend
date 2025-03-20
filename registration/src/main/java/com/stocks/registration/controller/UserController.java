@@ -7,27 +7,31 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.Optional;
+import java.time.format.DateTimeParseException;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin(origins = "*")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
     // REGISTER
+    // Expects JSON body with user fields
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody User user) {
-        User savedUser = userService.registerUser(user);
-        return ResponseEntity.ok(savedUser);
+        User saved = userService.registerUser(user);
+        return ResponseEntity.ok(saved);
     }
 
     // LOGIN
+    // Expects JSON { "email": "...", "password": "..." }
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(
-            @RequestParam String email,
-            @RequestParam String password) {
+    public ResponseEntity<String> loginUser(@RequestBody Map<String, String> body) {
+        String email = body.get("email");
+        String password = body.get("password");
 
         boolean authenticated = userService.authenticate(email, password);
         if (authenticated) {
@@ -38,27 +42,34 @@ public class UserController {
     }
 
     // FORGOT PASSWORD
+    // Expects JSON { "email": "...", "dateOfBirth": "yyyy-MM-dd", "newPassword": "..." }
     @PostMapping("/forgot-password")
-    public ResponseEntity<String> forgotPassword(
-            @RequestParam String email,
-            @RequestParam String dob,      // e.g. "1990-05-15"
-            @RequestParam String newPassword) {
+    public ResponseEntity<String> forgotPassword(@RequestBody Map<String, String> body) {
+        try {
+            String email = body.get("email");
+            String dobStr = body.get("dateOfBirth");
+            String newPassword = body.get("newPassword");
 
-        LocalDate dateOfBirth = LocalDate.parse(dob);
-        boolean updated = userService.forgotPassword(email, dateOfBirth, newPassword);
-        if (updated) {
-            return ResponseEntity.ok("Password reset successfully");
-        } else {
-            return ResponseEntity.status(404).body("User not found or DOB mismatch");
+            LocalDate dob = LocalDate.parse(dobStr);
+
+            boolean updated = userService.forgotPassword(email, dob, newPassword);
+            if (updated) {
+                return ResponseEntity.ok("Password reset successfully");
+            } else {
+                return ResponseEntity.status(404).body("User not found or DOB mismatch");
+            }
+        } catch (DateTimeParseException e) {
+            return ResponseEntity.badRequest().body("Invalid date format. Use yyyy-MM-dd.");
         }
     }
 
     // CHANGE PASSWORD
+    // Expects JSON { "email": "...", "oldPassword": "...", "newPassword": "..." }
     @PostMapping("/change-password")
-    public ResponseEntity<String> changePassword(
-            @RequestParam String email,
-            @RequestParam String oldPassword,
-            @RequestParam String newPassword) {
+    public ResponseEntity<String> changePassword(@RequestBody Map<String, String> body) {
+        String email = body.get("email");
+        String oldPassword = body.get("oldPassword");
+        String newPassword = body.get("newPassword");
 
         boolean changed = userService.changePassword(email, oldPassword, newPassword);
         if (changed) {

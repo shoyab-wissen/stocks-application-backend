@@ -28,8 +28,8 @@ public class Stocks {
     private double price;
     private int quantity;
     private double totalValue;
-    private int min;
-    private int max;
+    private int minPrice;
+    private int maxPrice;
     private double minValue;
     private double maxValue;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
