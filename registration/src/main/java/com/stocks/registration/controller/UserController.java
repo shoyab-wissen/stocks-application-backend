@@ -7,20 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/api/auth")
 public class UserController {
+
     @Autowired
     private UserService userService;
 
+    // REGISTER
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<User>> registerUser(@RequestBody User user) {
-        User saved = userService.registerUser(user);
-        return ResponseEntity.ok(ApiResponse.success(saved, "User registered successfully"));
+        User savedUser = userService.registerUser(user);
+        return ResponseEntity.ok(ApiResponse.success(savedUser, "User registered successfully"));
     }
 
+    // LOGIN
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<String>> loginUser(
             @RequestParam String email,
@@ -34,19 +35,32 @@ public class UserController {
         }
     }
 
-    @GetMapping("/user")
-    public ResponseEntity<ApiResponse<User>> getUser(@RequestParam String email) {
-        Optional<User> userOpt = userService.getUserByEmail(email);
-        if (userOpt.isPresent()) {
-            return ResponseEntity.ok(ApiResponse.success(userOpt.get()));
+    // FORGOT PASSWORD
+    @PostMapping("/forgot-password")
+    public ResponseEntity<ApiResponse<String>> forgotPassword(
+            @RequestParam String email,
+            @RequestParam String newPassword) {
+
+        boolean updated = userService.forgotPassword(email, newPassword);
+        if (updated) {
+            return ResponseEntity.ok(ApiResponse.success("Password reset successfully"));
         } else {
             return ResponseEntity.status(404).body(ApiResponse.error("User not found"));
         }
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<ApiResponse<User>> updateUser(@RequestBody User user) {
-        User updated = userService.updateUser(user);
-        return ResponseEntity.ok(ApiResponse.success(updated, "User updated successfully"));
+    // CHANGE PASSWORD
+    @PostMapping("/change-password")
+    public ResponseEntity<ApiResponse<String>> changePassword(
+            @RequestParam String email,
+            @RequestParam String oldPassword,
+            @RequestParam String newPassword) {
+
+        boolean changed = userService.changePassword(email, oldPassword, newPassword);
+        if (changed) {
+            return ResponseEntity.ok(ApiResponse.success("Password changed successfully"));
+        } else {
+            return ResponseEntity.status(400).body(ApiResponse.error("Invalid email or old password"));
+        }
     }
 }

@@ -9,11 +9,10 @@ import java.util.Optional;
 
 @Service
 public class UserService {
+
     @Autowired
     private UserRepository userRepository;
-
     public User registerUser(User user) {
-        // Add validations, hashing, etc., as needed
         return userRepository.save(user);
     }
 
@@ -22,11 +21,27 @@ public class UserService {
         return userOpt.isPresent() && userOpt.get().getPassword().equals(password);
     }
 
-    public Optional<User> getUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public boolean forgotPassword(String email, String newPassword) {
+        Optional<User> userOpt = userRepository.findByEmail(email);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            user.setPassword(newPassword);
+            userRepository.save(user);
+            return true;
+        }
+        return false;
     }
 
-    public User updateUser(User user) {
-        return userRepository.save(user);
+    public boolean changePassword(String email, String oldPassword, String newPassword) {
+        Optional<User> userOpt = userRepository.findByEmail(email);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            if (user.getPassword().equals(oldPassword)) {
+                user.setPassword(newPassword);
+                userRepository.save(user);
+                return true;
+            }
+        }
+        return false;
     }
 }
