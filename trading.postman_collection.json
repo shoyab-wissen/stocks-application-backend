@@ -1,0 +1,143 @@
+{
+    "info": {
+        "name": "Trading System",
+        "description": "Collection for Trading and Search APIs",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Search",
+            "item": [
+                {
+                    "name": "Search Stocks",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8083/api/stocks/search?query=AAPL",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8083",
+                            "path": ["api", "stocks", "search"],
+                            "query": [
+                                {
+                                    "key": "query",
+                                    "value": "AAPL"
+                                }
+                            ]
+                        },
+                        "description": "Search stocks by symbol or name using fuzzy search"
+                    }
+                },
+                {
+                    "name": "Get All Stocks",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8083/api/stocks",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8083",
+                            "path": ["api", "stocks"]
+                        },
+                        "description": "Get all stocks sorted by symbol"
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Trading",
+            "item": [
+                {
+                    "name": "Buy Stocks",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "http://localhost:8083/api/trade/buy",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8083",
+                            "path": ["api", "trade", "buy"]
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"userId\": 1,\n    \"stockSymbol\": \"AAPL\",\n    \"quantity\": 10,\n    \"price\": 150.50,\n    \"tradeType\": \"BUY\"\n}"
+                        },
+                        "description": "Buy stocks for a user"
+                    }
+                },
+                {
+                    "name": "Sell Stocks",
+                    "request": {
+                        "method": "POST",
+                        "url": {
+                            "raw": "http://localhost:8083/api/trade/sell",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8083",
+                            "path": ["api", "trade", "sell"]
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"userId\": 1,\n    \"stockSymbol\": \"AAPL\",\n    \"quantity\": 5,\n    \"price\": 155.75,\n    \"tradeType\": \"SELL\"\n}"
+                        },
+                        "description": "Sell stocks for a user"
+                    }
+                },
+                {
+                    "name": "Get User Holdings",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8083/api/trade/holdings/1",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8083",
+                            "path": ["api", "trade", "holdings", "1"]
+                        },
+                        "description": "Get user's stock holdings"
+                    }
+                },
+                {
+                    "name": "Get Portfolio Value",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8083/api/trade/portfolio/value/1",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8083",
+                            "path": ["api", "trade", "portfolio", "value", "1"]
+                        },
+                        "description": "Get total portfolio value for a user"
+                    }
+                },
+                {
+                    "name": "Get Portfolio By Value",
+                    "request": {
+                        "method": "GET",
+                        "url": {
+                            "raw": "http://localhost:8083/api/trade/portfolio/ordered/1",
+                            "protocol": "http",
+                            "host": ["localhost"],
+                            "port": "8083",
+                            "path": ["api", "trade", "portfolio", "ordered", "1"]
+                        },
+                        "description": "Get user's portfolio ordered by value"
+                    }
+                }
+            ]
+        }
+    ]
+}

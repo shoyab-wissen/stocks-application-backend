@@ -18,6 +18,7 @@ public class User {
     private String email;
     private String password;
     private boolean isActive;
+    @Column(name = "account_number")
     private int accountNumber;
     private double balance;
     private int transactionCount;

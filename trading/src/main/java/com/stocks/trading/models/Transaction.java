@@ -3,6 +3,7 @@ package com.stocks.trading.models;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -14,7 +15,10 @@ public class Transaction {
     private String accountId;
     private String transactionType;
     private double amount;
-    private String transactionDate;
+
+    @Column(columnDefinition = "TIMESTAMP")
+    private Timestamp transactionDate;
+
     private String description;
     private String status;
 
