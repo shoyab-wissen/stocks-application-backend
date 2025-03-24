@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin (origins = "*")
 @RequestMapping("/api/auth")
 public class UserController {
 
