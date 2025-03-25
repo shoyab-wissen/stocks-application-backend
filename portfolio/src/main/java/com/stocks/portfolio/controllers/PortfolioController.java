@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/portfolio")
@@ -73,8 +74,8 @@ public class PortfolioController {
             List<Stocks> watchlist = portfolioService.getWatchlist(userId);
             return ResponseEntity.ok(ApiResponse.success(watchlist));
         } catch (Exception e) {
-            return ResponseEntity.badRequest()
-                    .body(ApiResponse.error("Failed to fetch watchlist: " + e.getMessage()));
+            // Return empty list instead of error response
+            return ResponseEntity.ok(ApiResponse.success(new ArrayList<>()));
         }
     }
 

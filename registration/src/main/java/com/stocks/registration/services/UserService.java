@@ -14,11 +14,47 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    public User authenticateAndGetUser(String email, String password) {
+        Optional<User> userOpt = userRepository.findByEmail(email);
+        
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            // In production, use proper password hashing
+            if (user.getPassword().equals(password)) {
+                // Set user as active when they log in
+                user.setActive(true);
+                return userRepository.save(user);
+            }
+        }
+        return null;
+    }
+
+    // Add logout method
+    public boolean logoutUser(String email) {
+        Optional<User> userOpt = userRepository.findByEmail(email);
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            user.setActive(false);
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
     // Registration logic
     public User registerUser(User user) {
         // In production, add checks for existing email, password hashing, etc.
         return userRepository.save(user);
     }
+    // Get All Users
+    public Iterable<User> getUsers() {
+        return userRepository.findAll();
+    }
+    // Delete User
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id.intValue());
+    }
+    
 
     // Login (simple check by email/password)
     public boolean authenticate(String email, String password) {
