@@ -3,12 +3,16 @@ package com.stocks.registration.controller;
 import com.stocks.registration.models.ApiResponse;
 import com.stocks.registration.models.LoginRequest;
 import com.stocks.registration.models.User;
+import com.stocks.registration.models.UserDTO;
 import com.stocks.registration.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -20,15 +24,34 @@ public class UserController {
 
     // REGISTER
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
-        User savedUser = userService.registerUser(user);
-        return ResponseEntity.ok(savedUser);
+    public ResponseEntity<String> registerUser(@RequestBody User user) {
+        User u = userService.registerUser(user);
+        Pattern pattern = Pattern.compile("^[A-Z]{5}[0-9]{4}[A-Z]{1}$");
+        if (u == null) {
+            return ResponseEntity.status(400).body("User already exists");
+        }
+        if (pattern.matcher(user.getPanCard()).matches()) {
+            return ResponseEntity.ok("User Registered Successfully");
+        } else {
+            return ResponseEntity.badRequest().body("Invalid PAN");
+        }
     }
+
     // GET ALL USERS
     @GetMapping("/users")
     public ResponseEntity<Iterable<User>> getAllUsers() {
         Iterable<User> users = userService.getUsers();
         return ResponseEntity.ok(users);
+    }
+
+    // GET USER BY ID
+    @GetMapping("/users/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
+        UserDTO user = userService.getUserById(id);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user);
     }
 
     // DELETE USER
@@ -44,16 +67,17 @@ public class UserController {
         try {
             User user = userService.authenticateAndGetUser(loginRequest.getEmail(), loginRequest.getPassword());
             if (user != null) {
-                // Remove sensitive information before sending
+                Map<String, Object> userData = new HashMap<>();
+                userData.put("id", user.getId());
                 user.setPassword(null);
-                return ResponseEntity.ok(ApiResponse.success(user, "Login successful"));
+                return ResponseEntity.ok(ApiResponse.success(userData, "Login successful"));
             } else {
                 return ResponseEntity.status(401)
-                    .body(ApiResponse.error("Invalid credentials"));
+                        .body(ApiResponse.error("Invalid credentials"));
             }
         } catch (Exception e) {
             return ResponseEntity.status(500)
-                .body(ApiResponse.error("Login failed: " + e.getMessage()));
+                    .body(ApiResponse.error("Login failed: " + e.getMessage()));
         }
     }
 
@@ -61,7 +85,7 @@ public class UserController {
     @PostMapping("/forgot-password")
     public ResponseEntity<String> forgotPassword(
             @RequestParam String email,
-            @RequestParam String dob,      // e.g. "1990-05-15"
+            @RequestParam String dob, // e.g. "1990-05-15"
             @RequestParam String newPassword) {
 
         LocalDate dateOfBirth = LocalDate.parse(dob);
@@ -95,7 +119,7 @@ public class UserController {
             return ResponseEntity.ok(ApiResponse.success(null, "Logged out successfully"));
         } else {
             return ResponseEntity.status(400)
-                .body(ApiResponse.error("Logout failed"));
+                    .body(ApiResponse.error("Logout failed"));
         }
     }
 }
