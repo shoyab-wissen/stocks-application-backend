@@ -8,6 +8,7 @@ import com.stocks.portfolio.repositories.UserStockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,11 +40,16 @@ public class PortfolioService {
     }
 
     public List<Stocks> getWatchlist(int userId) {
-        User user = getPortfolio(userId);
-        if (user.getWatchlist() == null || user.getWatchlist().isEmpty()) {
-            throw new RuntimeException("Watchlist is empty for user: " + userId);
+        try {
+            User user = getPortfolio(userId);
+            if (user.getWatchlist() == null) {
+                user.setWatchlist(new ArrayList<>());
+                userRepository.save(user);
+            }
+            return user.getWatchlist();
+        } catch (Exception e) {
+            return new ArrayList<>();
         }
-        return user.getWatchlist();
     }
 
     public UserStock addStock(int userId, int stockId, int quantity, double buyPrice) {
@@ -98,6 +104,11 @@ public class PortfolioService {
 
     public User addToWatchlist(int userId, int stockId) {
         User user = getPortfolio(userId);
+        
+        // Initialize watchlist if null
+        if (user.getWatchlist() == null) {
+            user.setWatchlist(new ArrayList<>());
+        }
 
         // Check if stock already exists in watchlist
         boolean exists = user.getWatchlist().stream()

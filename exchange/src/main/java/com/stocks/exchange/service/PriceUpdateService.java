@@ -6,8 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class PriceUpdateService {
@@ -15,7 +19,7 @@ public class PriceUpdateService {
     @Autowired
     private StocksRepository stocksRepository;
 
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(cron = "0 0/1 * * * *")
     public void updatePrices() {
         List<Stocks> allStocks = stocksRepository.findAll();
         for (Stocks stock : allStocks) {
@@ -38,7 +42,12 @@ public class PriceUpdateService {
                 stock.setTotalValue(stock.getQuantity() * newPrice);
                 stock.setLastClosingPrice(newPrice);
                 stock.setLastUpdated(LocalDateTime.now());
-
+                Map<Date, Double> history = stock.getHistory();
+                if(history == null){
+                    history = new HashMap<Date, Double>();
+                }
+                history.put(Date.from(Instant.now()), stock.getPrice());
+                stock.setHistory(history);
                 stocksRepository.save(stock);
             }
         }
