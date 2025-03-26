@@ -75,6 +75,9 @@ public class UserService {
         if (!userRepository.findByPanCard(user.getPanCard()).isEmpty()) {
             return null;
         }
+        int accountNumber = generateAccountNumber();
+        user.setAccountNumber(accountNumber);
+        System.out.println("This is the generated account number "+user.getAccountNumber());
         return userRepository.save(user);
     }
 
@@ -96,6 +99,7 @@ public class UserService {
             userDTO.setDateOfBirth(user.getDateOfBirth());
             userDTO.setPanCard(user.getPanCard());
             userDTO.setTransactionCount(user.getTransactionCount());
+            userDTO.setAccountNumber(user.getAccountNumber());
             return userDTO;
         }
         return null;
@@ -147,5 +151,13 @@ public class UserService {
             }
         }
         return false;
+    }
+
+    public int generateAccountNumber(){
+        int number = (int) (Math.random() * 1000000);
+        if(userRepository.findByAccountNumber(number).isEmpty()){
+            return number;
+        }
+        return generateAccountNumber();
     }
 }
