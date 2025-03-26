@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.TemporalAccessor;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -40,7 +42,9 @@ public class PriceUpdateService {
 
                 stock.setPrice(newPrice);
                 stock.setTotalValue(stock.getQuantity() * newPrice);
-                stock.setLastClosingPrice(newPrice);
+                if(LocalTime.now() == LocalTime.of(17, 00)){
+                    stock.setLastClosingPrice(newPrice);
+                }
                 stock.setLastUpdated(LocalDateTime.now());
                 Map<Date, Double> history = stock.getHistory();
                 if(history == null){

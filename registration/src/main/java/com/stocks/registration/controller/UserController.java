@@ -37,13 +37,19 @@ public class UserController {
         }
     }
 
+    // // GET ALL USERS
+    // @GetMapping("/users")
+    // public ResponseEntity<Iterable<UserDTO>> getAllUsers() {
+    //     Iterable<UserDTO> users = userService.getUsers();
+    //     return ResponseEntity.ok(users);
+    // }
+
     // GET ALL USERS
     @GetMapping("/users")
     public ResponseEntity<Iterable<User>> getAllUsers() {
         Iterable<User> users = userService.getUsers();
         return ResponseEntity.ok(users);
     }
-
     // GET USER BY ID
     @GetMapping("/users/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
@@ -60,6 +66,14 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity.ok("User deleted successfully");
     }
+
+    // DELETE by Account Number
+    @DeleteMapping("/deleteAccount/{accountNumber}")
+    public ResponseEntity<String> deleteUserByAccountNumber(@PathVariable int accountNumber) {
+        userService.deleteUser(Long.valueOf(accountNumber));
+        return ResponseEntity.ok("User deleted successfully");
+    }   
+
 
     // LOGIN
     @PostMapping("/login")
@@ -82,6 +96,7 @@ public class UserController {
     }
 
     // FORGOT PASSWORD
+    // Change here
     @PostMapping("/forgot-password")
     public ResponseEntity<String> forgotPassword(
             @RequestParam String email,
