@@ -32,7 +32,8 @@ CREATE TABLE bank_user (
     account_number INTEGER,
     balance DECIMAL(15,2),
     transaction_count INTEGER,
-    pan_card VARCHAR(10)
+    pan_card VARCHAR(10),
+    date_of_birth Date
 );
 
 -- Create user_stock table
