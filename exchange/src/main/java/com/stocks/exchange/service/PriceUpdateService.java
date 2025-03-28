@@ -14,9 +14,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class PriceUpdateService {
+    private static final Logger logger = LoggerFactory.getLogger(PriceUpdateService.class);
 
     @Autowired
     private StocksRepository stocksRepository;
@@ -47,10 +50,16 @@ public class PriceUpdateService {
                 }
                 stock.setLastUpdated(LocalDateTime.now());
                 Map<Date, Double> history = stock.getHistory();
-                if(history == null){
-                    history = new HashMap<Date, Double>();
+                if (history == null) {
+                    history = new HashMap<>();
                 }
-                history.put(Date.from(Instant.now()), stock.getPrice());
+                
+                Date now = Date.from(Instant.now());
+                history.put(now, stock.getPrice());
+                
+                // Log the history size
+                logger.info("Stock {} history size: {}", stock.getSymbol(), history.size());
+                
                 stock.setHistory(history);
                 stocksRepository.save(stock);
             }
