@@ -35,5 +35,5 @@ public class Stocks {
     private Map<Date, Double> history;
     private String symbol;
     private double lastClosingPrice;
-    private LocalDateTime lastUpdated;
+    private Date lastUpdated;
 }
